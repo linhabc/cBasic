@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char* argv[]){
+  if(argc!=4){
+    printf("Enter 4 argument.\n");
+    return -1;
+  }
+
+  
+  
+
+
+  
+  return 0;
+}
+void replaceName(char* str, char* str1, char* str2){
+  int i;
+  char str[];
+  if(strstr(str,s1)!=NULL){
+    str=strstr(str,s1);
+    
+
+  }
+}

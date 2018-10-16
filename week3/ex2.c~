@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <ctype.h>
+
+
+
+int main(int argc, char * argv[]){
+  if(argc!=2){
+    printf("Enter 1 argument and name");
+  }
+  
+  FILE* fin = fopen(argv[1], "r");
+ 
+  
+
+  return 0;
+}
+
+void statistic(FILE* fin){
+  FILE* fout = fopen("sourcestats.txt", "w");
+  int c;
+  while((c=fgetc(fin)) != EOF){
+    if(isupper(c))
+      tolower(c);
+    
+
+
+
+  
+}

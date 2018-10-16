@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "BST(US).h"
+
+
+int main(){
+  char name[16][MAX];
+  /*
+  tree  root;
+  makeNull(&root);
+  */
+  int i=0;
+  FILE* f = fopen("USopen.txt", "r");
+  while( !feof(f) ){
+    fscanf(f, "%s ", name[i]);
+    i++;
+    printf("%s\n", name[i]);
+  }
+
+  return 0;
+}
+

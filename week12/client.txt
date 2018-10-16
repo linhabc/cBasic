@@ -1,0 +1,11 @@
+1111 ngoc linh   20000000 2 3 4
+2222 trung thanh 30000000 3 4 5
+3333 duc phung   25000000 2 2 2
+4444 ngoc tran   10000000 1 1 2
+5555 dung bui    15000000 1 2 4
+6666 the chuong  16000000 2 3 1
+7777 ngoc thanh  17000000 5 4 7
+8888 the chinh   18000000 3 6 1
+9999 tran duc    14000000 2 3 1
+1010 viet hung   13000000 4 3 2
+

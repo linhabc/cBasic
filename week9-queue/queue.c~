@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdio_ext.h> //using _fpurge(stdin);
+
+typedef int elementtype;
+
+typedef struct node node;
+struct node{
+  elementtype element;
+  node* prev;
+  node* next;
+};
+
+typedef struct{
+  node* head;
+  node* rear;
+  node* cur;
+} queue;
+
+// prototype functions
+void init_list(doubleL *list);
+node *makeNewNode(elementtype* addr);
+elementtype* readNode();
+void displayNode(node *node_addr);
+
+int main(){
+  int n;
+  doubleL list;
+  init_list(&list);
+  insertAtHead(readNode(), &list);
+  insertAfterCur(readNode(), &list);
+  printf("Enter position: ");
+  scanf(" %d", &n);
+  insertAtPosition(readNode(), n, &list);
+  transversingList(&list);
+  deleteAtHead(&list);
+
+  transversingList(&list);
+  return 0;
+}
+
+int isEmpty(queue *q){
+  return (q->head==NULL);
+}
+
+
+void init_list(queue *q){
+  q->head = NULL;
+  q->rear= NULL;
+  q->cur = NULL;
+  return;
+}
+
+node *makeNewNode(elementtype* addr){
+  node *new = (node*)malloc(sizeof(node));
+  new->element = *addr;
+  new->next=NULL;
+  new->prev=NULL;
+  return new;
+}
+
+elementtype* readNode(){
+  elementtype *addr=(elementtype*)malloc(sizeof(elementtype));
+  printf("Enter : ");
+  scanf(" %d", addr);
+  return addr;
+}
+
+void displayNode(node *node_addr){
+  if(node_addr==NULL){
+    printf("Error NULL pointer.\n");
+    return;
+  }
+  printf("%d ", node_addr->element);
+  return;
+}
+
+void enQueue(elementtype *addr, queue *q){
+  node* new = makeNewNode(addr);
+  q->rear->next = new;
+  q->rear = q->rear->next;
+}
+
+void deQueue(doubleL *list){
+  if(list->head==NULL) return;
+  node* tmp = list->head;
+  list->head = list->head->next;
+  free(tmp);
+  list->cur = list->head;
+  return;
+}
+

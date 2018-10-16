@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct phone{
+  char model[10];
+  int storage;
+  float display;
+};
+
+typedef phone  elementtype;
+typedef struct node node;
+typedef struct node{
+  elementtype element;
+  node* next;
+};
+
+node* root;
+node* cur;
+
+
+
+
+
+node* makeNewNode(elementtype addr){
+  node* new = (node*)malloc(sizeof(node));
+  new->element = addr;
+  new->next = NULL;
+  return new;
+}

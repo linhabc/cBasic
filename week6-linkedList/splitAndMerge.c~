@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+  int num;
+  int id;
+  char name[30];
+  int grade;
+}stu_t;
+
+struct addr_node{
+  stu_t student;
+  struct addr_node *next;
+};
+
+typedef struct addr_node node_addr;
+  
+int main(){
+  FILE* fin= fopen("grade-table.dat", rb);
+  FILE* f1= fopen("grade1.dat", w+b);
+  FILE* f2= fopen("grade2.dat", w+b);
+  if(fin==NULL || f1==NULL || f2==NULL){
+    printf("Cannot loaded file,\n");
+    return 1;
+  }
+
+  stu_t *stu;
+  stu=(stu_t *)malloc(20*sizeof(stu_t));
+
+
+
+
+
+
+
+
+
+
+  
+  free(stu);
+  fclose(fin);
+  fclose(f1);
+  fclose(f2);
+  return 0;
+}
+
+
+void readDat(FILE* fin, stu_t stu[]){
+  int i;
+  fread(stu, sizeof(stu_t), 20, fin);
+  for(i=0; i<20; i++){
+    printf("%4d%11d%-30s%d\n", stu[i].num, stu[i].id, stu[i].name, stu[i].grade);
+  }
+}

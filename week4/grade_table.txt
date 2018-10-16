@@ -1,0 +1,20 @@
+   1   20167313   Tran Bich Ngoc             1
+   2   20160674   Nguyen Duc Dung            2
+   3   20164571   Vu Thanh Tung              3
+   4   20160456   Chu The Chuong             4
+   5   20163693   Đao Ngoc Thanh            5
+   6   20166589   Tran Duc Phung             6
+   7   20167313   Dao Cao Thanh Long         7
+   8   20160674   Nguyen Minh Hieu           8
+   9   20164571   Le Bao Khanh               9
+  10   20160456   Tran Viet Anh Phuong       1
+  11   20163693   Phan Dinh Tuong            1
+  12   20166589   Le Xuan Thanh              1
+  13   20162513   Ha Le Thinh                1
+  14   20161546   Bui Duc Huy                1
+  15   20162135   Ha Minh Duc                1
+  16   20163255   Nguyen Quang Linh          1
+  17   20164582   Le The Chinh               1
+  18   20163711   Ha Dinh Gia Vinh           1
+  19   20163922   Tran Minh Duc              1
+  20   20164284   Nguyen Minh Truong         1

@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+
+int main(){
+  FILE* fin=fopen("lab1.txt","r+b");
+  FILE* fout=fopen("lab1a.txt", "w+b");
+  
+  if(fin==NULL||fout==NULL){
+    printf("Cannot opened the file.\n");
+    return 1;
+  }
+
+  int n;
+  char buff[41];
+  while(!feof(fin)){
+    n= fread(buff,sizeof(char),40,fin) ;
+    buff[n*sizeof(char)]='\0';
+    printf("%s", buff);
+    n = fwrite(buff,sizeof(char),40,fout);
+  }
+
+  fclose(fin);
+  fclose(fout);
+  return 0;
+}

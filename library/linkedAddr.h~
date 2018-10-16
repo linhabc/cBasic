@@ -1,0 +1,216 @@
+#include <stdio.h>
+#include <stdio_ext.h>
+#include <stdlib.h>
+#include <string.h>
+
+//declaration of address list
+typedef int elType;
+
+struct list_el{
+  elType element;
+  struct list_el *next;
+};
+
+typedef struct list_el node;
+
+typedef struct{
+  node *root;
+  node *cur;
+}linkList;
+
+void initList(linkList *list){
+  list->root == NULL;
+  list->cur == NULL;
+}
+
+node *makeNewNode(elType addr1){
+  node* new=(node*)malloc(sizeof(node));
+  new->element = addr1;
+  new->next = NULL;
+  return new;
+}
+
+void insertAtHead(elType addr, linkList *list){
+  node* new = makeNewNode(addr);
+  new->next = list->root;
+  list->root=new;
+  list->cur=list->root;
+}
+
+elType readNode(){
+  elType addr;
+  printf("Enter: ");
+  scanf(" %d", &addr);
+  return addr;
+}
+
+void displayNode(node *node){
+  if(node==NULL){
+    printf("Error NUll Pointer\n");
+    return;
+  }
+  printf("%d\n", node->element);
+
+}
+
+void traversingList(linkList *list){
+  node *p;
+  for(p=list->root; p!=NULL; p=p->next){
+    displayNode(p);
+  }
+}
+
+void insertAfterCur(elType addr, linkList *list){
+  node *new = makeNewNode(addr);
+  
+  if(list->root==NULL){
+    list->root = new;
+    list->cur = list->root;
+  }else{
+    new->next = list->cur->next;
+    list->cur->next = new;
+    //prev=cur;
+    list->cur = list->cur->next;
+  }
+}
+
+void insertBeforeCur(elType addr, linkList *list){
+  node *new = makeNewNode(addr);
+  node *prev=(node*)malloc(sizeof(node));
+  if(list->root==NULL){
+    list->root=new;
+    list->cur = list->root;
+  }else{
+    for(prev=list->root;prev!=NULL;prev=prev->next){
+      if(prev->next == list->cur){
+	break;
+      }
+    }
+    new->next=list->cur;
+    prev->next=new;
+    list->cur=new;
+  }
+}
+
+void freeList(linkList *list){
+  node *to_free;
+  to_free = list->root;
+  while(to_free!=NULL){
+    list->root = list->root->next;
+    free(to_free);
+    to_free=list->root;
+  }
+}
+
+node *insertAtPosition(elType addr, int n, linkList* list){
+  node * new= makeNewNode(addr);
+  node* p = list->root;
+  int count=0;
+  for(p;p!=NULL;p=p->next){
+    if(count==n){
+      new->next = list->cur->next;
+      list->cur->next = new;
+      //prev=cur;
+      list->cur = list->cur->next;
+      break;
+    }
+    list->cur=p;
+    count++;
+  }
+}
+
+void deleteAtPos(int n, linkList* list){
+  node* tmp = list->root;
+  if(n==1){
+    list->root = tmp->next;
+    free(tmp);
+    return;
+  }
+  for(int i=0;i<n-2;i++){
+    tmp = tmp->next;
+   }
+  node* tmp1 = tmp->next;
+  tmp->next = tmp1->next;
+  free(tmp1);
+}
+
+void deleteAtHead(linkList* list){
+  if(list->root==NULL) return;
+  node* p=list->root;
+  list->root=list->root->next;
+  free(p);
+  list->cur=list->root;
+}
+
+void deleteCur(linkList *list){
+  node* prev=list->root;
+  if(list->cur==NULL) return;
+  if(list->cur==list->root){
+    deleteAtHead(list);
+  }
+  else{
+    for(prev;prev!=NULL;prev=prev->next){
+      if(prev->next==list->cur){
+	break;
+      }
+    }
+    prev->next=list->cur->next;
+    free(list->cur);
+    list->cur=prev->next;
+  }
+}
+
+node* reverseList(linkList *list){
+  node *tmp, *prev;
+  tmp = prev = NULL;
+  while(list->root != NULL){
+    tmp = list->root;
+    list->root = list->root->next;
+    list->cur->next = prev;
+    prev = tmp;
+  }
+  return prev;
+}
+/*
+int main(){
+  linkList list1;
+  initList(&list1);
+  
+  elType tmp=readNode();
+  list1.root=makeNewNode(tmp);
+  list1.cur=list1.root;
+  
+  printf("\nTraversing List:\n");
+  traversingList(&list1);
+
+  elType tmp1 = readNode();
+  insertAtHead(tmp1, &list1);
+  
+  elType tmp2 = readNode();
+  insertAtHead(tmp2, &list1);
+  
+  elType tmp3 = readNode();
+  insertAfterCur(tmp3, &list1);
+  
+  elType tmp4 = readNode();
+  insertBeforeCur(tmp4, &list1);
+
+  printf("\nTraversing List:\n");
+  traversingList(&list1);
+  deleteAtPos(1, &list1);
+  printf("\nTraversing List after delete pos 1:\n");
+  traversingList(&list1);
+  deleteCur(&list1);
+  printf("\nTraversing List after delete cur:\n");
+  traversingList(&list1);
+  deleteAtHead(&list1);
+  printf("\nTraversing List after delete head:\n");
+  traversingList(&list1);
+
+  freeList(&list1);
+  printf("\nTraversing List after free list:\n");
+  traversingList(&list1);
+  return 0;
+}
+*/
+

@@ -1,0 +1,20 @@
+1   20167313   Tran Bich Ngoc
+2   20160674   Nguyen Duc Dung
+3   20164571   Vu Thanh Tung
+4   20160456   Chu The Chuong
+5   20163693   Đao Ngoc Thanh
+6   20166589   Tran Duc Phung
+7   20167313   Dao Cao Thanh Long
+8   20162431   Nguyen Le Ngoc Linh
+9   20164571   Le Bao Khanh
+10  20160456   Tran Viet Anh Phuong
+11  20163693   Phan Dinh Tuong
+12  20166589   Le Xuan Thanh
+13  20162513   Ha Le Thinh
+14  20161546   Bui Duc Huy
+15  20162135   Ha Minh Duc
+16  20163255   Nguyen Quang Linh
+17  20164582   Le The Chinh
+18  20163711   Ha Dinh Gia Vinh
+19  20163922   Tran Minh Duc
+20  20164284   Nguyen Minh Truong 

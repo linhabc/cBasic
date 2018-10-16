@@ -1,0 +1,20 @@
+#include "BST(word).h"
+
+void readTxt(char file[], char c[]);
+
+int main(){
+  char c[MAX];
+  readTxt("word.txt", c);
+
+
+}
+
+void readTxt(char file[], char c[]){
+  FILE* f = fopen(file, "r");
+  if(f==NULL){
+    printf("cannot open file.\n");
+    return;
+  }
+  fgets(c, MAX, f);
+}
+

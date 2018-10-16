@@ -1,0 +1,478 @@
+File
+
+Nếu máy tính của các bạn có ổ cứng, hoặc các bạn có USB hoặc bất kỳ thiết bị lưu trữ nào thì chắc chắn các bạn đã từng làm việc với File. Khi các bạn chơi một game offline, thông tin nhân vật, điểm số, ... sẽ được lưu trữ trong File để khi chương trình game bị tắt đi thì các bạn không phải chơi lại từ đầu. Khi các bạn cài đặt cấu hình cho một phần mềm và tắt đi, cấu hình đó được lưu vào File để lần làm việc tiếp theo sẽ sử dụng. Hay khi các bạn biên dịch một chương trình C++ trên Visual Studio 2015, C++ Compiler của Visual studio sẽ đọc mã nguồn các bạn đã viết trong các file *.cpp để kiểm tra lỗi và dịch chúng sang file *.obj. Ngay cả hệ điều hành Windows mà các bạn đang sử dụng cũng là tập hợp của rất nhiều file được lưu trữ bên trong phân vùng ổ đĩa dùng cho Hệ điều hành...
+
+Đó là một vài ví dụ cho thấy sự tồn tại của File trong máy tính. Vậy thì chúng ta đã thao tác với những File đó như thế nào?
+
+Làm việc với File chúng ta chỉ có các thao tác cơ bản như: tạo file mới, đọc dữ liệu trong file, ghi dữ liệu vào file, xóa file... Và chúng ta làm điều đó hằng ngày, khi chúng ta chơi game, khi xem phim trên máy tính, ... và ngay cả khi chúng ta lập trình, mã nguồn của chúng ta được lưu xuống File mã nguồn khi nhấn tổ hợp phím Ctrl + S.
+
+Theo định nghĩa trên Wikipedia về computer file: Một file trên máy tính là một tài nguyên dùng để lưu trữ thông tin lâu dài, sử dụng cho các chương trình máy tính.
+
+Cũng giống như việc lưu trữ dữ liệu tạm thời trên RAM, file cũng lưu trữ dữ liệu dưới dạng nhị phân (0 hoặc 1), tuy nhiên tùy vào định dạng của file và cách chuyển đổi của mỗi phần mềm đọc file mà chúng ta có những kiểu thông tin khác nhau. Ví dụ file .png thì được chuyển về dạng hình ảnh, phần mềm Microsoft Word chuyển dãy bit nhị phân về dạng text...
+
+Trong ngôn ngữ lập trình C/C++: File là kiểu đối tượng, nó xác định một stream và chứa các thông tin cần thiết để điều khiển, bao gồm một con trỏ trỏ đến buffer của nó, các chỉ mục và trạng thái của nó.
+
+Các bạn có thể hiểu File (trong ngôn ngữ lập trình C/C++) là một kiểu đối tượng mà thông qua nó chúng ta có thể thao tác với dữ liệu được lưu trữ bên trong File (chứ không phải là một File trên máy tính).
+
+Để các bạn không bị nhầm lẫn, mình đang nói về kiểu dữ liệu FILE được định nghĩa trong thư viện cstdio (hay stdio.h) mà có thể các bạn đã từng học trong ngôn ngữ C. Chúng ta sẽ học cách sử dụng các Stream để thao tác với file thay vì sử dụng kiểu dữ liệu FILE trong các bài học sau, nhưng mình nghĩ kiểu dữ liệu FILE trong thư viện cstdio cũng có những ưu điểm riêng của nó nên mình không bỏ qua bài học này.
+Làm việc với FILE type trong C/C++
+
+Trong bài học này, mình sẽ hướng dẫn các bạn thực hiện các thao tác như mở file, đọc và ghi dữ liệu trong file... Chúng ta cần làm việc trên một file cụ thể nào đó nên mình sẽ tạo một file với tên file là my_document.txt trong thư mục Desktop có đường dẫn trên máy mình là: C:/Users/ADMIN/Desktop/my_document.txt
+
+Để làm việc với file, chúng ta cần biết vị trí của file (thông qua đường dẫn) để con trỏ kiểu FILE có thể tạo được luồng dữ liệu giữa người dùng và file trên thiết bị lưu trữ.
+
+#include <iostream>
+#include <cstdio>
+
+int main()
+{
+	const char *filePath = "C:/Users/ADMIN/Desktop/my_document.txt";
+	FILE *file;
+	
+	return 0;
+}
+
+Open file
+
+Để mở một file, các bạn có thể sử dụng hàm fopen được định nghĩa trong thư viện cstdio:
+
+FILE* fopen(const char *file, const char *mode);
+
+Hàm fopen cho phép tạo một kết nối đến file với đường dẫn được lưu trữ bởi tham số thứ nhất. Nếu file không tồn tại, file mới sẽ được tạo ra với tên file như trong đường dẫn. Tham số thứ hai xác định kiểu truy cập vào file. Bảng dưới đây liệt kê các mode dùng để mở một file trong C:
+
+0.png?raw=true753x373
+
+Nếu mở file thành công, một địa chỉ của một đối tượng kiểu FILE sẽ được trả về. Nếu mở file thất bại thì trả về NULL.
+
+const char *filePath = "C:/Users/ADMIN/Desktop/my_document.txt";
+FILE *file;
+
+file = fopen(filePath, "r");
+if (!file)
+	std::cout << "Can not open this file" << std::endl;
+else
+	std::cout << "File is opened" << std::endl;
+
+Trong đoạn chương trình trên, mình mở file đã tạo sẵn trong thư mục Desktop với mode "r" (chỉ dùng để đọc dữ liệu).
+
+Các bạn cần lưu ý rằng file trong máy tính tồn tại ở 2 dạng: file văn bản và file bị mã hóa.
+
+File văn bản là những file mà các bạn có thể đọc được khi mở bằng các trình soạn thảo văn bản, thông thường những file này được định dạng Unicode (hoặc những định dạng dùng cho văn bản khác).
+
+File bị mã hóa (thường gọi là file nhị phân) không thể đọc được khi mở file bằng các trình soạn thảo văn bản. Sử dụng File bị mã hóa giúp chúng ta bảo mật dữ liệu tốt hơn File văn bản.
+
+Các mode mà mình đã liệt kê ở bảng trên chỉ dùng để thao tác với file văn bản. Khi thao tác với file bị mã hóa (file nhị phân), các bạn cần nối thêm kí tự b (binary) vào ngay sau mode mà các bạn chọn. Ví dụ: "rb", "wb", "ab", "rb+", "r+b", ...
+Close file
+
+Sau khi thao tác với file xong, các bạn cần đóng file lại để tránh những lỗi phát sinh ngoài ý muốn. Để đóng file, chúng ta sử dụng hàm fclose:
+
+int fclose(FILE *file);
+
+Trong đó, file là con trỏ được dùng để lưu trữ địa chỉ của đối tượng FILE đang mở. Nếu đóng file thành công thì trả về giá trị 0, ngược lại trả về EOF (End of file).
+
+const char *filePath = "C:/Users/ADMIN/Desktop/my_document.txt";
+FILE *file;
+
+file = fopen(filePath, "r");
+if (!file)
+	std::cout << "Can not open this file" << std::endl;
+else
+	std::cout << "File is opened" << std::endl;
+
+fclose(file);
+
+Hàm fclose sẽ giải phóng tất cả dữ liệu chưa được xử lý trên file nếu chúng vẫn còn lưu trong buffer, đóng file lại, và giải phóng tất cả vùng nhớ mà đối tượng FILE sử dụng.
+Write data to file
+
+Các bạn đã thực hiện được thao tác mở và đóng file, nhưng lúc này, file mới tạo ra vẫn chưa có dữ liệu nên mình sẽ thực hiện thao tác ghi dữ liệu vào file trước. Để mở file cho chế độ ghi file, chúng ta có các mode "w", "r+", "w+", "a", "a+". Mình chỉ muốn ghi dữ liệu nên mình sẽ chọn mode "w".
+
+Nhưng trước hết, chúng ta nên tách thao tác ghi file ra một hàm riêng có dạng:
+
+void writeToFile(FILE *file);
+
+Hàm này sẽ được gọi sau khi mở file và trước khi đóng file.
+
+const char *filePath = "C:/Users/ADMIN/Desktop/my_document.txt";
+FILE *file;
+
+file = fopen(filePath, "w");
+if (!file)
+	std::cout << "Can not open this file" << std::endl;
+else
+	std::cout << "File is opened" << std::endl;
+	
+writeToFile(file);
+
+fclose(file);
+
+Bây giờ, chúng ta chỉ quan tâm đến nội dung bên trong hàm writeToFile.
+
+Để ghi dữ liệu vào file, chúng ta có các hàm đã được định nghĩa sẵn trong thư viện cstdio như sau:
+
+    fputc:
+
+    int fputc(int c, FILE *f);
+
+    Hàm fputc sẽ ghi ký tự có mã ASCII là c vào file được trỏ đến bởi con trỏ f. Giá trị trả về là EOF nếu ghi dữ liệu thất bại, trả về mã ASCII của kí tự được ghi vào nếu thực hiện thành công.
+
+    Ví dụ:
+
+    void writeToFile(FILE *file)
+    {
+    	int c = fputc('A', file);
+    	std::cout << c << std::endl;
+    }
+
+    Sau khi chạy chương trình xong, các bạn mở file my_document.txt trên Desktop lên sẽ thấy kí tự 'A' đã được ghi vào, đồng thời trên console cũng in ra mã ASCII của kí tự 'A'.
+
+    fputs:
+
+    int fputs(const char *str, FILE *f);
+
+    Hàm fputs ghi một C-Style string vào file được trỏ đến bởi con trỏ f cho đến khi gặp kí tự '\0'.
+
+    Ví dụ:
+
+    void writeToFile(FILE *file)
+    {
+    	int c = fputs("hello", file);
+    }
+
+    Sau khi chạy chương trình, các bạn mở file my_document.txt ở thư mục Desktop sẽ thấy kí tự 'A' lúc nãy không còn nữa, thay vào đó là chuỗi kí tự "hello".
+
+    fprintf:
+
+    int fprintf(FILE *f, const char *format, ...);
+
+    Hàm fprintf tương tự hàm printf trong ngôn ngữ C. Tuy nhiên, hàm printf được mặc định liên kết với đối tượng FILE có tên là stdout nên sử dụng hàm printf sẽ ghi nội dung ra màn hình.
+
+    Hàm printf tương đương với cách sử dụng fprintf(stdout, format, ...).
+
+    Nhưng lúc này, chúng ta muốn ghi dữ liệu vào file nên chúng ta sẽ truyền vào tham số thứ nhất là một con trỏ kiểu FILE khác với các đối tượng stdout, stdin hay stderr.
+
+    Cách định dạng cho tham số format trong hàm fprintf cũng giống như hàm printf, các bạn có thể tham khảo ở đây:
+
+    http://www.cplusplus.com/reference/cstdio/printf/110
+
+    Ví dụ:
+
+    void writeToFile(FILE *file)
+    {
+    	for (int i = 1; i <= 5; i++)
+    		fprintf(file, "This is an example line %d\n", i);
+    }
+
+    Sau khi chạy đoạn chương trình trên, các bạn mở lại file my_document.txt trong thư mục Desktop để xem lại kết quả.
+
+    Sử dụng hàm fprintf giúp chúng ta dễ dàng định dạng cho dữ liệu được ghi vào file, từ đó có thể ghi nhiều dòng vào file bằng vòng lặp nếu các dòng đó có cùng định dạng.
+
+Read data from file
+
+Đầu tiên mình sẽ tạo một hàm khác có tên là readFromFile như sau:
+
+void readFromFile(FILE *file)
+{
+	//read data
+}
+
+Để làm các ví dụ trong phần này, mình sẽ gọi hàm này sau khi đã gọi hàm writeToFile.
+
+const char *filePath = "C:/Users/ADMIN/Desktop/my_document.txt";
+FILE *file;
+
+file = fopen(filePath, "w+");
+if (!file)
+	std::cout << "Can not open this file" << std::endl;
+else
+	std::cout << "File is opened" << std::endl;
+
+writeToFile(file);
+readFromFile(file);
+
+fclose(file);
+
+Lúc này, file của chúng ta được mở để vừa đọc và ghi file, nên mình sẽ sử dụng mode "w+" (hoặc "r+").
+
+Và dưới đây là một số hàm được định nghĩa sẵn trong thư viện cstdio hỗ trợ chúng ta đọc dữ liệu văn bản từ file.
+
+    fgetc:
+
+    int fgetc(FILE *f);
+
+    Hàm fgetc đọc ra một kí tự trong file, internal file position indicator sẽ chuyển đến kí tự tiếp theo. Giá trị trả về là mã ASCII của kí tự đã đọc được.
+
+    Ví dụ:
+
+    void readFromFile(FILE *file)
+    {
+    	std::cout << (char)fgetc(file) << std::endl;
+    }
+
+    fgets:
+
+    char* fgets(char *buf, int n, FILE *f);
+
+    Hàm fgets đọc từ file ra (n - 1) kí tự, việc đọc dữ liệu sẽ bị dừng nếu đọc được kí tự new line '\n' hoặc EOF. Chuỗi kí tự đọc được sẽ lưu vào vùng nhớ được quản lý bởi con trỏ buf, nếu đọc dữ liệu thành công thì trả về địa chỉ của buf, ngược lại trả về NULL.
+
+    Ví dụ:
+
+    void readFromFile(FILE *file)
+    {
+    	char str[255];
+    	std::cout << fgets(str, 255, file) << std::endl;
+    	std::cout << str << std::endl;
+    }
+
+    Kết quả đọc file được lưu vào mảng kí tự str.
+
+    fscanf:
+
+    Tương tự như ghi dữ liệu vào file với định dạng cho trước, chúng ta cũng có thể đọc dữ liệu từ file với một định dạng nào đó.
+
+    int fscanf(FILE *f, const char *format, ...);
+
+    fscanf cũng hoạt động tương tự hàm scanf trong ngôn ngữ C, tuy nhiên, hàm scanf được thiết lập liên kết mặc định đến file stdin. Như vậy, fscanf(stdin, format, ...) sẽ tương đương với scanf(format, ...).
+
+    Hàm fscanf cũng hoạt động tương tự scanf nên các bạn có thể tham khảo thêm tại đây:
+
+    http://www.cplusplus.com/reference/cstdio/scanf/95
+
+    Ví dụ:
+
+    void readFromFile(FILE *file)
+    {
+    	char str[255];
+    	fscanf(file, "%[^\n]", str);
+    	std::cout << str << std::endl;
+    }
+
+    Lưu ý, sử dụng hàm fscanf không khiến internal file position indicator di chuyển đến các vị trí tiếp theo nên chúng ta cần thêm một số kĩ thuật khác liên quan đến việc di chuyển con trỏ trong file (internal file position indicator).
+
+Reposition stream position indicator
+
+Ghép các ví dụ ở trên lại, chúng ta có một chương trình đơn giản minh họa cho việc ghi file và đọc từng dòng dữ liệu (line by line) đã được ghi vào file như sau:
+
+#include <iostream>
+#include <string>
+#include <cstdio>
+
+void writeToFile(FILE *file)
+{
+	for (int i = 1; i <= 5; i++)
+		fprintf(file, "This is an example line %d\n", i);
+}
+
+void readFromFile(FILE *file)
+{
+	char str[255];
+	while (fgets(str, 255, file) != NULL)
+	{
+		std::cout << str;
+	}
+}
+
+int main()
+{
+	const char *filePath = "C:/Users/ADMIN/Desktop/my_document.txt";
+	FILE *file;
+
+	file = fopen(filePath, "w+");
+	if (!file)
+		std::cout << "Can not open this file" << std::endl;
+	else
+		std::cout << "File is opened" << std::endl;
+
+	writeToFile(file);
+	readFromFile(file);
+
+	fclose(file);
+
+	return 0;
+}
+
+Tuy nhiên, kết quả cho ra màn hình không như mong muốn.
+
+Nguyên nhân là khi chúng ta gọi hàm writeToFile và truyền vào đó con trỏ file, việc ghi file đã khiến internal file position indicator trỏ đến vị trí cuối cùng trong file. Sau khi quay trở lại hàm main, chúng ta tiếp tục gọi hàm readFromFile với cùng một con trỏ file. Như vậy, lúc chúng ta đọc file thì chúng ta lại bắt đầu đọc tại vị trí kết thúc file.
+
+Để khắc phục điều này, chúng ta cần đóng con trỏ file lại và mở tạo một liên kết mới bằng hàm fopen với mode dùng để đọc file. Tuy nhiên, làm như vậy thì code xử lý của chúng ta sẽ dài hơn. Thư viện cstdio đã hỗ trợ cho chúng ta hàm fseek để thay đổi vị trí trỏ đến trong file của internal file position indicator.
+
+int fseek(FILE *f, long int offset, int origin);
+
+Trong đó:
+
+    f là con trỏ trỏ đến đối tượng FILE đang mở.
+
+    offset là số bytes được cộng thêm tính từ vị trí origin.
+
+    origin là địa điểm đặt con trỏ trong file:
+
+Như vậy, sau khi gọi hàm writeToFile xong, chúng ta cần di chuyển internal file position indicator về đầu file bằng cách như sau:
+
+writeToFile(file);
+fseek(file, 0, SEEK_SET);
+readFromFile(file);
+
+Sau đó chạy chương trình thì thấy dữ liệu in ra màn hình đúng như những gì chúng ta đã ghi vào file.
+Determine size of content of file
+
+Đôi khi chúng ta cần đọc toàn bộ nội dung của file vào một vùng nhớ trên Heap, chúng ta sẽ cần biết trước kích thước nội dung có trong file để cấp phát đủ vùng nhớ trước khi đọc file. Thư viện cstdio chỉ cung cấp cho chúng ta hàm ftell:
+
+long int ftell(FILE *f);
+
+Hàm này sẽ trả về vị trí của file indicator đang trỏ đến trong file (số bytes của nội dung file mà indicator đã duyệt qua).
+
+Như vậy, các bạn có thể đọc kích thước của nội dung trong file bằng cách dịch internal file position indicator về vị trí cuối cùng trong file rồi gọi hàm ftell:
+
+__int64 size_of_file(FILE *file)
+{
+	fseek(file, 0, SEEK_END);
+	__int64 size = ftell(file);
+	fseek(file, 0, SEEK_SET);
+	
+	return size;
+}
+
+Binary I/O functions
+
+Dưới đây là 2 hàm dùng để đọc và ghi dữ liệu chỉ dùng cho mode nhị phân.
+
+size_t fwrite(const void *ptr, size_t size, size_t count, FILE *f);
+
+Hàm fwrite dùng để ghi dãy bit trong vùng nhớ được quản lý bởi con trỏ ptr vào file đang được trỏ bởi f, size là số bytes sẽ copy từ vùng nhớ của ptr và count là số lần ghi vùng nhớ đó xuống file.
+
+Hàm fwrite không quan tâm vùng nhớ của các bạn có định dạng gì, nó quan tâm kích thước vùng nhớ cần đọc và cứ thế copy tất cả các bits và file, mỗi lần sẽ copy 1 block of bit.
+
+size_t fread(void *ptr, size_t size, size_t count, FILE *f);
+
+Hàm fread sẽ copy count lần block of bits có kích thước là size, đưa vào vùng nhớ được trỏ đến bởi ptr, từ file đang được quản lý bởi f.
+
+Sau khi gọi hàm fread, internal file position indicator sẽ di chuyển tới (size * count) bytes từ vị trí bắt đầu đọc file.
+
+Ví dụ:
+
+#include <iostream>
+#include <cstring>
+#include <cstdio>
+
+void writeToFile(FILE *file)
+{
+	char *s = "Hello everyone!";
+	fwrite(s, strlen(s), 1, file);
+}
+
+void readFromFile(FILE *file)
+{
+	void *ptr = operator new(255); //allocate 255 bytes on Heap
+	fread(ptr, 255, 1, file);
+	(static_cast<char *>(ptr))[255] = '\0';
+	std::cout << static_cast<char *>(ptr) << std::endl;
+}
+
+int main()
+{
+	const char *filePath = "C:/Users/ADMIN/Desktop/my_document.txt";
+	FILE *file;
+
+	file = fopen(filePath, "w+b"); //use binary mode
+	if (!file)
+		std::cout << "Can not open this file" << std::endl;
+	else
+		std::cout << "File is opened" << std::endl;
+
+	writeToFile(file);
+	fseek(file, 0, SEEK_SET);
+	readFromFile(file);
+
+	fclose(file);
+
+	return 0;
+}
+
+Chạy chương trình trên cho ra kết quả là rất nhiều kí tự rác.
+
+Như các bạn thấy, hàm fread đọc đúng 255 bytes trong file để đưa vào vùng nhớ của ptr nên các giá trị thừa xuất hiện. Trong trường hợp này, dùng hàm fread và fwrite không phù hợp. Hàm fread và fwrite thường được dùng để đọc và ghi dữ liệu kiểu struct vào file.
+Write and read structs
+
+Mình vẫn giữ nguyên cấu trúc chương trinh như trên và chỉ thay đổi code trong hàm writeToFile và readFromFile.
+
+Trước hết, mình tạo một struct đơn giản như sau:
+
+struct Employee
+{
+	__int32 ID;
+	char name[50];
+};
+
+Kích thước của struct này là 56 bytes (không phải là 54 bytes do cách tổ chức dữ liệu trong struct còn liên quan đến khái niệm struct alignment). Như vậy là mỗi unit có kiểu Employee được tạo ra đều chiếm một vùng nhớ có kích thước 56 bytes.
+
+Các bạn thử tưởng tượng nếu chúng ta sử dụng các hàm ghi file như fputs, fprintf... thì kích thước tên của mỗi người sẽ khác nhau dẫn đến chúng ta không có một định dạng chung để dễ quản lý nhiều Employee trong file. Việc đặt chúng vào trong 1 struct giúp chúng ta đọc và ghi file dễ dàng hơn nhiều.
+
+Dưới đây là một đoạn chương trình mẫu cho việc xử lý file để quản lý 3 Employee:
+
+#include <iostream>
+#include <cstring>
+#include <cstdio>
+
+struct Employee
+{
+	__int32 ID;
+	char name[50];
+};
+
+Employee emps[3] =
+{
+	{ 1, "Le Tran Dat" },
+	{ 2, "Ngo Doan Tuan" },
+	{ 3, "Le Dinh Huy" }
+};
+
+void writeToFile(FILE *file)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		fwrite(&emps[i], sizeof(Employee), 1, file);
+	}
+}
+
+void readFromFile(FILE *file)
+{
+	Employee emp;
+	for (int i = 0; i < 3; i++)
+	{
+		fread(&emp, sizeof(Employee), 1, file);
+		
+		std::cout << emp.ID << std::endl;
+		std::cout << emp.name << std::endl;
+		std::cout << "================================" << std::endl;
+	}
+}
+
+int main()
+{
+	const char *filePath = "C:/Users/ADMIN/Desktop/my_document.txt";
+	FILE *file;
+
+	file = fopen(filePath, "w+b"); //use binary mode
+	if (!file)
+		std::cout << "Can not open this file" << std::endl;
+	else
+		std::cout << "File is opened" << std::endl;
+
+	writeToFile(file);
+	fseek(file, 0, SEEK_SET);
+	readFromFile(file);
+
+	fclose(file);
+
+	return 0;
+}
+
+Các bạn chạy thử đoạn chương trình trên để xem kết quả.
+
+Bây giờ chúng ta cùng mở file my_document.txt trong thư mục Desktop để xem thử nội dung trong file như thế nào:
+
+2.png?raw=true642x570
+
+Vậy là nội dung file đã bị mã hóa dưới dạng nhị phân nên không thể đọc hoàn toàn nội dung lưu trong file được.
+
+Việc sử dụng hàm fread và fwrite cho các kiểu dữ liệu struct giúp chúng ta thao tác dễ dàng hơn khi kích thước của các biến struct là giống nhau.

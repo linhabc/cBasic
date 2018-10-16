@@ -1,0 +1,8 @@
+1.list declartion
+-data structure
+
+2.degine A Implement(function).
+-make newNode()
+-get data
+-allocate memeory
+-assign data
